@@ -1,0 +1,133 @@
+/*
+   Global Background
+=== */
+
+.main-background {
+    -fx-background-image: url("images/background.jpg");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+}
+
+/*
+   Typography
+=== */
+
+.title {
+    -fx-text-fill: white;
+    -fx-font-size: 48px;
+    -fx-font-weight: bold;
+}
+
+.subtitle {
+    -fx-text-fill: #cccccc;
+    -fx-font-size: 16px;
+}
+
+.section-title {
+    -fx-text-fill: white;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+.section-subtitle {
+    -fx-text-fill: #aaaaaa;
+    -fx-font-size: 14px;
+}
+
+/*
+   Opponent Selection Buttons
+=== */
+
+.opponent-button {
+    -fx-background-color: #151a17;
+    -fx-text-fill: white;
+    -fx-font-size: 24px;
+    -fx-padding: 20;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-alignment: center;
+    -fx-cursor: hand;
+    -fx-transition: all 0.2s ease-in-out;
+}
+
+.opponent-button:hover {
+    -fx-background-color: #0f2418;
+    -fx-effect: dropshadow(gaussian, rgba(0, 255, 153, 0.4), 10, 0, 0, 0);
+}
+
+.opponent-button:selected {
+    -fx-background-color: #0d2a1b;
+    -fx-border-color: #00ff99;
+    -fx-border-width: 2px;
+}
+
+/*
+   Start Game Button
+=== */
+
+.start-button {
+    -fx-background-color: #00b36b;
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-padding: 15;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 255, 153, 0.3), 6, 0, 0, 0);
+}
+
+.start-button:hover {
+    -fx-background-color: #00cc7a;
+}
+
+.start-button:disabled {
+    -fx-opacity: 0.5;
+}
+
+/*
+   Rules Panel
+=== */
+
+.rules-box {
+    -fx-background-color: rgba(13, 21, 18, 0.85);
+    -fx-padding: 20;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+
+.rules-title {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 18px;
+}
+
+.rule-item {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+}
+
+.rule-item.warning {
+    -fx-text-fill: #ff3333;
+}
+
+/*
+   Background Overlay
+ */
+
+.background-overlay {
+    -fx-background-color: rgba(0, 0, 0, 0.35);
+
+    -fx-pref-width: 100%;
+    -fx-pref-height: 100%;
+}
+
+
+/* Fondo semitransparente para  el contenido */
+.content-box {
+    -fx-background-color: rgba(0, 0, 0, 0.6);
+    -fx-padding: 40;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+}
