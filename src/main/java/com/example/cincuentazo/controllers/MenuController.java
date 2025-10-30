@@ -1,4 +1,4 @@
-package com.example.cincuentazo;
+package com.example.cincuentazo.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -70,7 +70,7 @@ public class MenuController {
             try {
                 // Load the new FXML scene
                 FXMLLoader loader = new FXMLLoader(
-                        getClass().getResource("game.fxml")
+                        getClass().getResource("/com/example/cincuentazo/views/game.fxml")
                 );
                 Parent gameRoot = loader.load();
 
