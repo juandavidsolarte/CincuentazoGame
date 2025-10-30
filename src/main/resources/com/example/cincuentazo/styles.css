@@ -55,11 +55,12 @@
     -fx-background-color: #0f2418;
     -fx-effect: dropshadow(gaussian, rgba(0, 255, 153, 0.4), 10, 0, 0, 0);
 }
-
-.opponent-button:selected {
+/*  Applied dynamically  when a button is clicked */
+.opponent-button.selected {
     -fx-background-color: #0d2a1b;
     -fx-border-color: #00ff99;
     -fx-border-width: 2px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 255, 153, 0.6), 12, 0, 0, 0);
 }
 
 /*

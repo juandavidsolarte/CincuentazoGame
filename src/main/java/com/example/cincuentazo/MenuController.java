@@ -3,24 +3,51 @@ package com.example.cincuentazo;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
+
+
+import java.io.IOException;
+import javafx.scene.control.Alert;
 
 public class MenuController {
 
     @FXML
     private Button btn1Opponent, btn2Opponent, btn3Opponent, btnStartGame;
 
+    private Button selectedButton = null;
     private int selectedOpponents = 0;
 
+
     @FXML
-    public void selectOpponent(ActionEvent event) {
-        // Remove "selected" class from all buttons
+    private void initialize() {
+        // Ensure all buttons start deselected
         btn1Opponent.getStyleClass().remove("selected");
         btn2Opponent.getStyleClass().remove("selected");
         btn3Opponent.getStyleClass().remove("selected");
 
-        // Add "selected" to clicked button
+        // Disable the Start Game button until an opponent is selected
+        btnStartGame.setDisable(true);
+
+        selectedButton = null;
+    }
+
+
+    @FXML
+    public void selectOpponent(ActionEvent event) {
         Button clicked = (Button) event.getSource();
+
+        // Remove "selected" style from the previously selected button
+        if (selectedButton != null) {
+            selectedButton.getStyleClass().remove("selected");
+        }
+
+        // Add "selected" style to the newly clicked button
         clicked.getStyleClass().add("selected");
+        selectedButton = clicked;
 
         // Set selected opponent count
         if (clicked == btn1Opponent) {
@@ -39,7 +66,48 @@ public class MenuController {
     public void startGame() {
         if (selectedOpponents > 0) {
             System.out.println("Starting game against " + selectedOpponents + " opponent(s)...");
-            //  Load game scene here
+
+            try {
+                // Load the new FXML scene
+                FXMLLoader loader = new FXMLLoader(
+                        getClass().getResource("game.fxml")
+                );
+                Parent gameRoot = loader.load();
+
+                // Get the controller of the new scene
+                // and pass the number of selected opponents
+                GameController gameController = loader.getController();
+                gameController.setNumberOfOpponents(selectedOpponents);
+
+                // Create a new window (Stage)
+                Stage gameStage = new Stage();
+                gameStage.setTitle("Cincuentazo");
+                gameStage.setScene(new Scene(gameRoot, 809, 800));
+
+                gameStage.getIcons().add(
+                        new Image(getClass().getResourceAsStream("/com/example/cincuentazo/images/icono.png"))
+                );
+
+                gameStage.setResizable(false);
+
+                // Optional: close the current menu window
+                Stage menuStage = (Stage) btnStartGame.getScene().getWindow();
+                menuStage.close(); // comment this line if you want to keep both windows open
+
+                // Show the new game window
+                gameStage.show();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+
+                // Show an error message if the FXML cannot be loaded
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Failed to load game");
+                alert.setContentText("Could not load the game screen.");
+                alert.showAndWait();
+            }
+
         }
     }
 }
