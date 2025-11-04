@@ -2,11 +2,59 @@ package com.example.cincuentazo.models;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Represents the main game logic for "Cincuentazo".
+ * Manages players, deck, table, turns, and game state.
+ */
 public class Game
 {
-    private Table table;
+    private List<Player> players;
     private Deck deck;
+    private Table table;
+    private int currentPlayerIndex;
+    private boolean gameOver;
+    private Player winner;
+
+    // Empty constructor
+    public Game() {
+
+    }
+
+    // Deck is created HERE — only when game starts
+    public void startGame(int numOpponents) {
+        // Reset state
+        this.players = new ArrayList<>();
+        //this.table = new Table();
+        this.currentPlayerIndex = 0;
+        this.gameOver = false;
+        this.winner = null;
+
+        // Create and shuffle deck
+        this.deck = new Deck();
+        /*
+        //  PRINT THE DECK TO CONSOLE (for debugging)
+        System.out.println("===  DECK CREATED  ===");
+        for (int i = 0; i < deck.getAllCards().size(); i++) {
+            System.out.println(deck.getAllCards().get(i));
+        }
+        System.out.println("==================================");
+
+         */
+
+        // add Players
+        // Add human player (index 0)
+        players.add(new Player("Human", true));
+        // Add machine players
+        for (int i = 1; i <= numOpponents; i++) {
+            players.add(new Player("Machine " + i, false));
+        }
+
+
+    }
+
+
+
+    /*
 
     private boolean gameActive; //determinant of whether there is an active game or not
 
@@ -39,4 +87,6 @@ public class Game
     }
 
     public Table getTable() { return table; }
+
+     */
 }
