@@ -13,27 +13,49 @@ public class GameController {
     private Label lblTableSum;
 
     @FXML
-    private HBox playerHandBox; // add container for the human player's cards
-
-    private Game game;
-    private int numberOfOpponents = 0;
-
-    // Metodo para recibir los oponentes desde el menú
-    public void setNumberOfOpponents(int opponents) {
-        this.numberOfOpponents = opponents;
-        if (lblOpponents != null) {
-            lblOpponents.setText("Playing against " + numberOfOpponents + " machine opponent(s)");
-        }
-    }
+    private Label lblTableCard; // Shows the actual card
 
     @FXML
-    private void initialize() {
-        if (lblOpponents != null) {
-            lblOpponents.setText("Opponents: " + numberOfOpponents);
-        }
-        if (lblTableSum != null) {
-            lblTableSum.setText("Table Sum: 0");
-        }
+    private HBox playerHandBox; //  container for the human player's cards
+
+    // Reference to the active game
+    private Game game;
+
+    /**
+     * Called by MenuController to inject the fully initialized game.
+     * Immediately updates the UI to reflect current game state.
+     *
+     * @param game the active Game instance
+     */
+    public void setGame(Game game) {
+        this.game = game;
+        updateTableUI();
     }
+
+    /**
+     * Initialize UI based on the current game state.
+     */
+    /**
+     * Updates the table display with the latest card and sum.
+     * Called whenever the table state changes (e.g., after a move).
+     */
+    private void updateTableUI() {
+        if (game == null || game.getTable() == null) return;
+
+        var table = game.getTable();
+        var lastCard = table.getLastCard();
+        int sum = table.getCurrentSum();
+
+        // Display card symbol
+        if (lastCard != null) {
+            lblTableCard.setText(lastCard.toString());
+        } else {
+            lblTableCard.setText(" ");
+        }
+
+        // Update sum label
+        lblTableSum.setText("Sum: " + sum);
+    }
+
 
 }

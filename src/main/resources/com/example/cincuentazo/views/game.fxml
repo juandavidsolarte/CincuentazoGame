@@ -15,11 +15,12 @@
             fx:controller="com.example.cincuentazo.controllers.GameController">
     <!-- Fondo translúcido que envuelve el contenido -->
 
-    <VBox layoutX="100.0" layoutY="100.0" spacing="20.0" styleClass="content-box">
+    <VBox layoutX="100.0" layoutY="200.0" spacing="20.0" styleClass="content-box">
         <Label text="Cincuentazo - Game Screen" styleClass="title" />
         <Label fx:id="lblOpponents" text="Loading..." styleClass="subtitle" />
         <Label text="Table Sum: 0" fx:id="lblTableSum" styleClass="section-title" />
         <Label text="Your turn!" styleClass="section-subtitle" />
+        <Label fx:id="lblTableCard" text="🂠" styleClass="table-card" />
         <!-- Aquí irán las cartas, máquinas, etc. -->
     </VBox>
 </AnchorPane>

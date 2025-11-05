@@ -1,5 +1,6 @@
 package com.example.cincuentazo.controllers;
 
+import com.example.cincuentazo.models.Game;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
@@ -68,18 +69,25 @@ public class MenuController {
             System.out.println("Starting game against " + selectedOpponents + " opponent(s)...");
 
             try {
-                // Load the new FXML scene
+
+                // 1. Create the Game instance HERE
+                Game game = new Game();
+                game.startGame(selectedOpponents);
+
+
+                // 2. Load the new FXML scene
                 FXMLLoader loader = new FXMLLoader(
                         getClass().getResource("/com/example/cincuentazo/views/game.fxml")
                 );
                 Parent gameRoot = loader.load();
 
-                // Get the controller of the new scene
+                // 3.Get the controller of the new scene
                 // and pass the number of selected opponents
                 GameController gameController = loader.getController();
-                gameController.setNumberOfOpponents(selectedOpponents);
+                gameController.setGame(game);
+                //gameController.setNumberOfOpponents(selectedOpponents);
 
-                // Create a new window (Stage)
+                // 4.Create a new window (Stage)
                 Stage gameStage = new Stage();
                 gameStage.setTitle("Cincuentazo");
                 gameStage.setScene(new Scene(gameRoot, 809, 800));
@@ -90,7 +98,7 @@ public class MenuController {
 
                 gameStage.setResizable(false);
 
-                // Optional: close the current menu window
+                // close the current menu window
                 Stage menuStage = (Stage) btnStartGame.getScene().getWindow();
                 menuStage.close(); // comment this line if you want to keep both windows open
 
