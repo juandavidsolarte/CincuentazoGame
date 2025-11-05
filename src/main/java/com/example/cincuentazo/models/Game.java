@@ -2,6 +2,8 @@ package com.example.cincuentazo.models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * Represents the main game logic for "Cincuentazo".
  * Manages players, deck, table, turns, and game state.
@@ -54,6 +56,23 @@ public class Game
             players.add(new Player("Machine " + i, false));
         }
 
+        int cardsToDeal = 4;
+        for (int i = 0; i < cardsToDeal; i++)
+        {
+            for (Player player : players)
+            {
+                if (!deck.isEmpty())
+                {
+                    player.receiveCard(deck.dealCard());
+                }
+            }
+        }
+        System.out.println("=== MANOS DE JUGADORES ===");
+        for (Player p : players) {
+            System.out.println(p.getName() + ": " + p.getHand());
+        }
+        System.out.println("==========================");
+
         // Draw the first card and place it on the table
         Card initialCard = deck.dealCard();
         table.playCard(initialCard); // Updates sum and stores card
@@ -62,21 +81,143 @@ public class Game
         System.out.println("Intialized table with card: " + initialCard +
                 " → Table sum: " + table.getCurrentSum());
 
-
     }
 
+
+
+
+
+    public Player getCurrentPlayerIndex()
+    {
+        return players.get(currentPlayerIndex);
+    }
+
+
+    /** Checks if a specific card is a legal move.
+     * @param card The card to check.
+     * @return true if the card does not exceed 50.
+     */
+    public boolean isValidPlay(Card card)
+    {
+        return table.getCurrentSum() + card.getOptimalValue(table.getCurrentSum()) <= 50;
+    }
+
+    /** Checks if a player has valid moves.
+     * @param player The player to check.
+     * @return true if they have at least one playable card.
+     */
+    public boolean canPlayerPlay(Player player)
+    {
+        return player.canPlay(table.getCurrentSum());
+    }
+
+    /** Executes a player's turn (human or computer).
+     * @param player The player who is taking the turn.
+     * @param card The card being played.
+     */
+    public void executePlay(Player player, Card card)
+    {
+        // Remove the card from the hand (if it is human. The AI already did it).
+        if (!player.isMachine())
+        {
+            player.playCard(card);
+        }
+
+        // Play the card on the table (updates the total)
+        table.playCard(card);
+
+        // Draw a card (and play an empty deck)
+        checkDeckAndDraw(player);
+    }
+
+    /** Moves to the next player, skipping eliminated ones
+     * and handling elimination if someone cannot play.
+     * @return The next player who CAN play.
+     */
+    public Player advanceToNextValidTurn()
+    {
+        if (isGameOver())
+        {
+            return winner; // End of the game
+        }
+
+        // Move to the next index
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+        Player nextPlayer = getCurrentPlayer();
+
+        // --- Logic Loop ---
+        // Did the game end?
+        List<Player> activePlayers = getActivePlayers();
+        if (activePlayers.size() <= 1)
+        {
+            this.gameOver = true;
+            this.winner = activePlayers.isEmpty() ? null : activePlayers.get(0);
+            return winner;
+        }
+
+        // Is it disqualified? If yes, skip
+        if (nextPlayer.isEliminated())
+        {
+            return advanceToNextValidTurn(); //Recursion to jump to the next
+        }
+
+        // Can play? If not, remove him and skip
+        if (!canPlayerPlay(nextPlayer))
+        {
+            handleElimination(nextPlayer);
+            return advanceToNextValidTurn();
+        }
+
+        // This player is valid and can play.
+        return nextPlayer;
+    }
+
+    /** Handles the removal of a player.
+     * @param player The player to remove.
+     */
+    private void handleElimination(Player player)
+    {
+        System.out.println("¡JUGADOR ELIMINADO: " + player.getName() + "!");
+        player.setEliminated(true);
+        // The eliminated player's cards are sent to the bottom of the deck
+        deck.addCardsToBottom(player.getHand());
+        player.getHand().clear(); // Empty the hand
+    }
+
+    /** Checks if the deck is empty and draws a card for the player.
+     * @param player The player who draws.
+     */
+    private void checkDeckAndDraw(Player player)
+    {
+        if (deck.isEmpty())
+        {
+            System.out.println("¡Mazo vacío! Rellenando desde la mesa...");
+            List<Card> tableCards = table.takeAllExceptLast();
+            deck.reshuffleFromTable(tableCards);
+        }
+
+        if (!deck.isEmpty()) {
+            player.receiveCard(deck.dealCard());
+        }
+    }
 
     // ===== Getters =====
 
-    public Table getTable() {
-        return table;
+    public Table getTable() { return table; }
+    public List<Player> getPlayers() { return players; }
+    public Player getCurrentPlayer() {return players.get(currentPlayerIndex);}
+    public Player getHumanPlayer() {return players.get(0);}
+    public Deck getDeck() { return deck; }
+    public boolean isGameOver() { return gameOver; }
+    public Player getWinner() { return winner; }
+
+    /** Helper to know how many players are left */
+    public List<Player> getActivePlayers()
+    {
+        return players.stream()
+                .filter(p -> !p.isEliminated())
+                .collect(Collectors.toList());
     }
-
-    public List<Player> getPlayers() {
-        return players;
-    }
-
-
 
     /*
 
