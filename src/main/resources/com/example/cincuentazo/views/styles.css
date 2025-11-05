@@ -132,3 +132,14 @@
     -fx-background-radius: 20;
     -fx-border-radius: 20;
 }
+
+
+.table-card {
+    -fx-font-size: 48px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-color: rgba(0, 0, 0, 0.3);
+    -fx-padding: 10;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}

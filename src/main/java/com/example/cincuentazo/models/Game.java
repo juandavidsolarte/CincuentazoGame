@@ -31,25 +31,49 @@ public class Game
 
         // Create and shuffle deck
         this.deck = new Deck();
-        /*
-        //  PRINT THE DECK TO CONSOLE (for debugging)
-        System.out.println("===  DECK CREATED  ===");
-        for (int i = 0; i < deck.getAllCards().size(); i++) {
-            System.out.println(deck.getAllCards().get(i));
-        }
-        System.out.println("==================================");
+        this.table = new Table();
 
-         */
+
+
+        //  PRINT THE DECK TO CONSOLE (for debugging)
+        System.out.println("Size : " + deck.size());
+        System.out.println("=== DECK: Card and Value ===");
+        for (int i = 0; i < deck.getAllCards().size(); i++) {
+            Card card = deck.getAllCards().get(i);
+            System.out.println((i + 1) + ". " + card + " → value = " + card.getValue());
+        }
+        System.out.println("================================");
+
+
 
         // add Players
-        // Add human player (index 0)
+        // Add player (index 0)
         players.add(new Player("Human", true));
         // Add machine players
         for (int i = 1; i <= numOpponents; i++) {
             players.add(new Player("Machine " + i, false));
         }
 
+        // Draw the first card and place it on the table
+        Card initialCard = deck.dealCard();
+        table.playCard(initialCard); // Updates sum and stores card
 
+        // Optional: Log to console for debugging
+        System.out.println("Intialized table with card: " + initialCard +
+                " → Table sum: " + table.getCurrentSum());
+
+
+    }
+
+
+    // ===== Getters =====
+
+    public Table getTable() {
+        return table;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
     }
 
 

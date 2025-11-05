@@ -48,13 +48,6 @@ public class Deck {
         }
         // After all suits, total cards = 4 × 13 = 52
 
-        //  Print all cards to console for debugging
-        System.out.println(" Generated " + cards.size() + " cards:");
-        for (Card card : cards) {
-            System.out.println(card); // uses Card.toString()
-        }
-
-
     }
 
     /**
@@ -67,7 +60,7 @@ public class Deck {
 
     // TO PRINT IN CONSOLE
     public List<Card> getAllCards() {
-        return new ArrayList<>(cards); // return a copy to preserve encapsulation
+        return new ArrayList<>(cards); // return a copy
     }
 
     /**

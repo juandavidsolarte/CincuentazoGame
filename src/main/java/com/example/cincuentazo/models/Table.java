@@ -5,6 +5,27 @@ import java.util.List;
 
 public class Table
 {
+    private int currentSum = 0;
+    private Card lastCard;
+
+    public Table() {
+
+    }
+
+    public void playCard(Card card) {
+        int value = card.getOptimalValue(currentSum);
+        currentSum += value;
+        this.lastCard = card;
+    }
+
+    public int getCurrentSum() {
+        return currentSum;
+    }
+
+    public Card getLastCard() {
+        return lastCard;
+    }
+
     private List<Card> cardsOnTable;
     private List<Player> players;
     private int currentPlayerIndex;
@@ -16,10 +37,7 @@ public class Table
         this.currentPlayerIndex = 0;
     }
 
-    public void playCard(Card card)
-    {
-        cardsOnTable.add(card);
-    }
+
 
     public List<Card> getCardsOnTable()
     {
