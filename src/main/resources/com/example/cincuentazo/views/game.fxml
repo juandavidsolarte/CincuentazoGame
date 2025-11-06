@@ -14,7 +14,6 @@
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.example.cincuentazo.controllers.GameController">
     <!-- Fondo translúcido que envuelve el contenido -->
-
     <VBox layoutX="100.0" layoutY="200.0" spacing="20.0" styleClass="content-box">
         <Label text="Cincuentazo - Game Screen" styleClass="title" />
         <Label fx:id="lblOpponents" text="Loading..." styleClass="subtitle" />
@@ -24,3 +23,4 @@
         <!-- Aquí irán las cartas, máquinas, etc. -->
     </VBox>
 </AnchorPane>
+
