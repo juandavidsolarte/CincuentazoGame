@@ -9,12 +9,14 @@ public class Table
     private Card lastCard;
 
     public Table() {
+        this.cardsOnTable = new ArrayList<>();
+        this.currentSum = 0;
 
     }
 
     public void playCard(Card card) {
         int value = card.getOptimalValue(currentSum);
-        currentSum += value;
+        currentSum = currentSum + value;
         this.lastCard = card;
     }
 
@@ -35,6 +37,15 @@ public class Table
         this.players = players;
         this.cardsOnTable = new ArrayList<>();
         this.currentPlayerIndex = 0;
+    }
+
+    /**
+     * Agrega una carta al montón de la mesa y actualiza la suma según las reglas del juego.
+     */
+    public void addCard(Card card) {
+        cardsOnTable.add(card);
+        currentSum += card.getValue();
+        System.out.println("Added to table: " + card + " (Sum now: " + currentSum + ")");
     }
 
 

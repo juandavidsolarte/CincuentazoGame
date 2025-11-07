@@ -52,15 +52,15 @@
 }
 
 .opponent-button:hover {
-    -fx-background-color: #0f2418;
-    -fx-effect: dropshadow(gaussian, rgba(0, 255, 153, 0.4), 10, 0, 0, 0);
+    -fx-background-color: #2a2a1f;
+    -fx-effect: dropshadow(gaussian, rgba(232, 201, 0, 0.5), 10, 0, 0, 0);
 }
 /*  Applied dynamically  when a button is clicked */
 .opponent-button.selected {
-    -fx-background-color: #0d2a1b;
-    -fx-border-color: #00ff99;
+    -fx-background-color: #1c1c13;
+    -fx-border-color: #e8c900;
     -fx-border-width: 2px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 255, 153, 0.6), 12, 0, 0, 0);
+    -fx-effect: dropshadow(gaussian, rgba(232, 201, 0, 0.8), 12, 0, 0, 0);
 }
 
 /*
@@ -68,15 +68,15 @@
 === */
 
 .start-button {
-    -fx-background-color: #00b36b;
-    -fx-text-fill: white;
+    -fx-background-color: #e8c900;
+    -fx-text-fill: #1a1a1a;
     -fx-font-size: 20px;
     -fx-font-weight: bold;
     -fx-padding: 15;
     -fx-border-radius: 10;
     -fx-background-radius: 10;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0, 255, 153, 0.3), 6, 0, 0, 0);
+    -fx-effect: dropshadow(gaussian, rgba(232, 201, 0, 0.5), 8, 0, 0, 0);
 }
 
 .start-button:hover {
@@ -125,6 +125,8 @@
 }
 
 
+/* =============Styles Game view ========= */
+
 /* Fondo semitransparente para  el contenido */
 .content-box {
     -fx-background-color: rgba(0, 0, 0, 0.6);
@@ -135,11 +137,56 @@
 
 
 .table-card {
-    -fx-font-size: 48px;
+    -fx-font-size: 24px;
     -fx-font-weight: bold;
     -fx-text-fill: white;
-    -fx-background-color: rgba(0, 0, 0, 0.3);
-    -fx-padding: 10;
-    -fx-border-radius: 8;
-    -fx-background-radius: 8;
+    -fx-background-color: #1a2328;
+    -fx-border-color: #e8c900;
+    -fx-border-width: 2px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 12 8 12 8;
+    -fx-min-width: 70px;
+    -fx-min-height: 100px;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+
+}
+
+/* Sección de mano del jugador */
+.hand-section {
+    -fx-alignment: center;
+    -fx-padding: 20 0 0 0;
+}
+
+.hand-title {
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+/* Estilo de cada carta (botón) */
+.card-button {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-color: #1a2328; /* fondo oscuro */
+    -fx-border-color: #e8c900;
+    -fx-border-width: 2px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 12 8 12 8;
+    -fx-min-width: 70px;
+    -fx-min-height: 100px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 255, 153, 0.3), 6, 0, 0, 0);
+}
+
+.card-button:hover {
+    -fx-background-color: #2a2f33;
+    -fx-effect: dropshadow(gaussian, rgba(232, 201, 0, 0.6), 12, 0, 0, 0);
+}
+
+.card-button:pressed {
+    -fx-scale-x: 0.95;
+    -fx-scale-y: 0.95;
 }

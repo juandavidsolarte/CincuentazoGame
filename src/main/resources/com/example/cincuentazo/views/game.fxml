@@ -1,26 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="622.0" prefWidth="809.0"
-            styleClass="main-background"
-            stylesheets="@styles.css"
-            xmlns="http://javafx.com/javafx/24.0.1"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.cincuentazo.controllers.GameController">
-    <!-- Fondo translúcido que envuelve el contenido -->
+<AnchorPane prefHeight="622.0" prefWidth="809.0" styleClass="main-background" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cincuentazo.controllers.GameController">
+    <!-- Fondo translúcido -->
 
-    <VBox layoutX="100.0" layoutY="200.0" spacing="20.0" styleClass="content-box">
-        <Label text="Cincuentazo - Game Screen" styleClass="title" />
-        <Label fx:id="lblOpponents" text="Loading..." styleClass="subtitle" />
-        <Label text="Table Sum: 0" fx:id="lblTableSum" styleClass="section-title" />
-        <Label text="Your turn!" styleClass="section-subtitle" />
-        <Label fx:id="lblTableCard" text="🂠" styleClass="table-card" />
-        <!-- Aquí irán las cartas, máquinas, etc. -->
+    <VBox layoutX="100.0" layoutY="100.0" spacing="20.0" styleClass="content-box">
+        <Label styleClass="title" text="Cincuentazo - Game Screen" />
+        <Label fx:id="lblOpponents" styleClass="subtitle" text=" Opponents " />
+        <Label fx:id="lblTableSum" styleClass="section-title" text="Table Sum: 0" />
+        <Label styleClass="section-subtitle" text="Your turn!" />
+        <!--  Contenedor de la carta en mesa -->
+        <Label fx:id="lblTableCard" prefHeight="91.0" prefWidth="58.0" styleClass="table-card" text=" " />
+
+        <!--  Contenedor para las 4 cartas del jugador -->
+        <HBox fx:id="playerHandBox" alignment="CENTER" prefHeight="93.0" prefWidth="616.0" spacing="15" />
+
+
+
+
+
+
     </VBox>
 </AnchorPane>
