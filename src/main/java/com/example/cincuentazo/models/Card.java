@@ -67,14 +67,20 @@ public class Card {
      * @param currentTableSum the current total sum on the table
      * @return the best possible value for this card in the current game context
      */
-
     public int getOptimalValue(int currentTableSum) {
         if (!rank.equals("A")) {
-
+            return getValue();
         }
         // Choose 10 for Ace only if it doesn't make the total exceed 50
         //return (currentTableSum + 10 <= 50) ? 10 : 1;
-        return getValue();
+        if (currentTableSum + 10 <= 50)
+        {
+            return 10;
+        }
+        else
+        {
+            return 1;
+        }
     }
 
     /**
