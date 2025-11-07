@@ -2,88 +2,77 @@ package com.example.cincuentazo.models;
 
 import java.util.ArrayList;
 import java.util.List;
-
-public class Player
-{
+/**
+ * Represents a player in the "Cincuentazo" game.
+ * Can be  human or machine.
+ */
+public class Player {
     private String name;
     private boolean isMachine; // state, is it a machine or not
     private List<Card> hand; // hand of cards
+    private boolean active;             // true if not eliminated
     private int score; // score
     private boolean isEliminated = false;  //To know if a player has already lost
 
-    public Player(String name, boolean isMachine)
-    {
+    /**
+     * Constructs a new player.
+     */
+    public Player(String name, boolean isMachine) {
         this.name = name;
         this.isMachine = isMachine;
         this.hand = new ArrayList<>();
+        this.active = true; // All players start active
         this.score = 0;
     }
 
-    public void receiveCard(Card card) { // "recibirCarta" -> "receiveCard", "carta" -> "card"
+    /**
+     * Adds a card to the player's hand.
+     */
+    public void addCard(Card card) {
         hand.add(card);
     }
 
-    public List<Card> getHand() { return hand; }
-
-    public boolean isMachine() { return isMachine; }
-
-    public int getScore() { return score; }
-
-    public void addPoints(int points) { // add points to score
-        score += points;
-    }
-
-    public void setEliminated(boolean eliminated)
-    {
-        this.isEliminated = eliminated;
-    }
-
-    public boolean isEliminated()
-    {
-        return isEliminated;
-    }
-
-    public String getName() { return name; }
-
-    /** Checks the player's hand to see if they have at least one valid move.
-     * @param currentTableSum The current sum on the table.
-     * @return true if the player can play, false if they should be eliminated.
+    /**
+     * Removes and returns a card at the given index.
+     * Assumes the index is valid and the player has enough cards.
      */
-    public boolean canPlay(int currentTableSum)
-    {
-        for (Card card : hand)
-        {
-            int cardValue = card.getOptimalValue(currentTableSum);
-            if (currentTableSum + cardValue <= 50)
-            {
-                return true; // ¡found a playable card!
-            }
-        }
-        return false; // has no cards to play
+    public Card playCard(int index) {
+        return hand.remove(index);
     }
 
-    /** (AI Logic) Find the best card to play.
-     * @param currentTableSum The current sum on the table.
-     * @return The selected card to play, or null if it cannot play.
+    public String getName() {
+        return name;
+    }
+
+    public boolean isMachine() {
+        return isMachine;
+    }
+
+    public List<Card> getHand() {
+        return new ArrayList<>(hand); // return copy to preserve encapsulation
+    }
+
+    public int getHandSize() {
+        return hand.size();
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    /**
+     * Marks the player as eliminated.
+     * Called when the player has no valid moves.
      */
-    public Card findBestMove(int currentTableSum)
-    {
-        // Simple strategy: play the first valid card you find
-        for (Card card : hand) {
-            int cardValue = card.getOptimalValue(currentTableSum);
-            if (currentTableSum + cardValue <= 50) {
-                hand.remove(card); // Remove the card from the hand
-                return card;
-            }
-        }
-        return null; // can't play
+    public void setInactive() {
+        this.active = false;
     }
 
-    // Method to remove a specific card (necessary for the human)
-    public void playCard(Card card)
-    {
-        hand.remove(card);
+    public boolean removeCard(Card card) {
+        System.out.println("Trying to remove: " + card);
+        boolean removed = hand.remove(card);
+        System.out.println("After remove: " + hand.size());
+        return removed;
     }
-
 
 }

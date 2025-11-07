@@ -7,14 +7,15 @@ public class Table
 {
     private int currentSum = 0;
 
-    private List<Card> cardsOnTable;       //Stores the pile of played cards
-
+    public Table() {
+        this.cardsOnTable = new ArrayList<>();
+        this.currentSum = 0;
 
 
     public void playCard(Card card) {
         int value = card.getOptimalValue(currentSum);
-        currentSum += value;
-        cardsOnTable.add(card); // Add the card to the stack
+        currentSum = currentSum + value;
+        this.lastCard = card;
     }
 
     public int getCurrentSum() {
@@ -26,7 +27,18 @@ public class Table
         this.currentSum = 0;
     }
 
-    public Card getLastCard()
+    /**
+     * Agrega una carta al montón de la mesa y actualiza la suma según las reglas del juego.
+     */
+    public void addCard(Card card) {
+        cardsOnTable.add(card);
+        currentSum += card.getValue();
+        System.out.println("Added to table: " + card + " (Sum now: " + currentSum + ")");
+    }
+
+
+
+    public List<Card> getCardsOnTable()
     {
         if (cardsOnTable.isEmpty())
         {

@@ -58,6 +58,14 @@ public class Deck
         Collections.shuffle(cards);
     }
 
+    /**
+     * Draws (removes and returns) the top card from the deck.
+     * Alias for dealCard(), for readability in some game contexts.
+     */
+    public Card drawCard() {
+        return dealCard();
+    }
+
 
     // TO PRINT IN CONSOLE
     public List<Card> getAllCards() {
