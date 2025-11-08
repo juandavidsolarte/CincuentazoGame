@@ -12,7 +12,7 @@
         <Label styleClass="title" text="Cincuentazo - Game Screen" />
         <Label fx:id="lblOpponents" styleClass="subtitle" text=" Opponents " />
         <Label fx:id="lblTableSum" styleClass="section-title" text="Table Sum: 0" />
-        <Label styleClass="section-subtitle" text="Your turn!" />
+        <Label fx:id="lblCurrentPlayer" styleClass="section-subtitle" text="Your turn!" />
         <!--  Contenedor de la carta en mesa -->
         <Label fx:id="lblTableCard" prefHeight="91.0" prefWidth="58.0" styleClass="table-card" text=" " />
 

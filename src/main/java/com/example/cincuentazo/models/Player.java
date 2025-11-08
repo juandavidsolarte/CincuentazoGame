@@ -75,4 +75,68 @@ public class Player {
         return removed;
     }
 
+    /** Checks the player's hand to see if they have at least one valid move.
+     * @param currentTableSum The current sum on the table.
+     * @return true if the player can play, false if they should be eliminated.
+     */
+    public boolean canPlay(int currentTableSum) {
+        for (Card card : hand) {
+            int cardValue = card.getOptimalValue(currentTableSum);
+            if (currentTableSum + cardValue <= 50) {
+                return true; // Found a playable card
+            }
+        }
+        return false; // Has no cards to play
+    }
+
+    /** (AI Logic) Find the best card to play.
+     * @param currentTableSum The current sum on the table.
+     * @return The selected card to play, or null if it cannot play.
+     */
+    public Card findBestMove(int currentTableSum) {
+        Card bestMove = null;
+
+        // Simple strategy: play the first valid card you find
+        for (Card card : hand) {
+            if (card.getRank().equals("J") || card.getRank().equals("Q") || card.getRank().equals("K")) {
+                if (currentTableSum + card.getOptimalValue(currentTableSum) <= 50) {
+                    bestMove = card;
+                    hand.remove(bestMove); // The AI removes the card from its hand WHEN IT IS CHOSEN
+                    return bestMove;
+                }
+            }
+        }
+
+        // 2. Try to play a 9 (value 0).
+        for (Card card : hand) {
+            if (card.getRank().equals("9")) {
+                bestMove = card; // 9 is always valid if the sum is already <= 50
+                hand.remove(bestMove);
+                return bestMove;
+            }
+        }
+
+        // 3. Play the first valid numbered card or Ace.
+        for (Card card : hand) {
+            if (currentTableSum + card.getOptimalValue(currentTableSum) <= 50) {
+                bestMove = card;
+                hand.remove(bestMove);
+                return bestMove;
+            }
+        }
+
+        // If it gets here, it has no play (although canPlay() should have prevented it)
+        return null;
+    }
+
+    // Missing help method in Game.java (receiveCard)
+    public void receiveCard(Card card) {
+        addCard(card);
+    }
+// --- END OF THE NEW METHODS ---
+
+    public boolean getIfIsEliminated() { return isEliminated;}
+
+    public void setEliminated(boolean isEliminated){ this.isEliminated = isEliminated;}
+
 }
