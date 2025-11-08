@@ -12,7 +12,6 @@ public class Player {
     private List<Card> hand; // hand of cards
     private boolean active;             // true if not eliminated
     private int score; // score
-    private boolean isEliminated = false;  //To know if a player has already lost
 
     /**
      * Constructs a new player.
@@ -76,3 +75,8 @@ public class Player {
     }
 
 }
+
+
+
+
+

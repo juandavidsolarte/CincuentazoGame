@@ -6,11 +6,13 @@ import java.util.List;
 public class Table
 {
     private int currentSum = 0;
+    private Card lastCard;
 
     public Table() {
         this.cardsOnTable = new ArrayList<>();
         this.currentSum = 0;
 
+    }
 
     public void playCard(Card card) {
         int value = card.getOptimalValue(currentSum);
@@ -22,9 +24,19 @@ public class Table
         return currentSum;
     }
 
-    public Table(){
+    public Card getLastCard() {
+        return lastCard;
+    }
+
+    private List<Card> cardsOnTable;
+    private List<Player> players;
+    private int currentPlayerIndex;
+
+    public Table(List<Player> players)
+    {
+        this.players = players;
         this.cardsOnTable = new ArrayList<>();
-        this.currentSum = 0;
+        this.currentPlayerIndex = 0;
     }
 
     /**
@@ -40,38 +52,21 @@ public class Table
 
     public List<Card> getCardsOnTable()
     {
-        if (cardsOnTable.isEmpty())
-        {
-            return null;
-        }
-        // The last letter is the one that is at the end of the list
-        return cardsOnTable.get(cardsOnTable.size() - 1);
-    }
-
-    /** Take all the cards on the table except the last one
-     * to refill the deck.
-     * @return A list of cards to shuffle.
-     */
-    public List<Card> takeAllExceptLast()
-    {
-        if (cardsOnTable.size() <= 1)
-        {
-            return new ArrayList<>(); // There is nothing to pick up
-        }
-
-        //Copy all the letters except the last one
-        List<Card> cardsToReshuffle = new ArrayList<>(cardsOnTable.subList(0, cardsOnTable.size() - 1));
-
-        // Leave only the last card on the table
-        Card lastCard = getLastCard();
-        cardsOnTable.clear();
-        cardsOnTable.add(lastCard);
-
-        return cardsToReshuffle;
-    }
-
-    public List<Card> getCardsOnTable()
-    {
         return cardsOnTable;
+    }
+
+    public List<Player> getPlayers()
+    {
+        return players;
+    }
+
+    public Player getCurrentPlayer()
+    {
+        return players.get(currentPlayerIndex);
+    }
+
+    public void nextTurn()
+    {
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
     }
 }

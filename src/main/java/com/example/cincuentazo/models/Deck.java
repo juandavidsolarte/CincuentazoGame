@@ -10,8 +10,7 @@ import java.util.*;
  *  4 suits: Hearts, Diamonds, Clubs, Spades
  * → Total: 13 × 4 = 52 cards
  */
-public class Deck
-{
+public class Deck {
 
     private List<Card> cards;
 
@@ -102,22 +101,5 @@ public class Deck
      */
     public int size() {
         return cards.size();
-    }
-
-
-    /** Adds cards (from an eliminated player) to the end of the deck.
-     */
-    public void addCardsToBottom(List<Card> cardsToAdd)
-    {
-        // I would add them at the beginning (background if taken from the end)
-        cards.addAll(0, cardsToAdd);
-    }
-
-    /** Adds the cards from the table, shuffles them, and puts them into the deck.
-     */
-    public void reshuffleFromTable(List<Card> tableCards)
-    {
-        this.cards.addAll(tableCards);
-        shuffle();
     }
 }

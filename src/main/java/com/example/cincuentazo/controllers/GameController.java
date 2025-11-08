@@ -26,9 +26,6 @@ public class GameController {
     private HBox playerHandBox; //  container for the human player's cards
     private List<Card> playerCards = new ArrayList<>();
 
-    @FXML
-    private Label lblCurrentPlayer; //to reference in the threads
-
     // Reference to the active game
     private Game game;
 
@@ -46,11 +43,12 @@ public class GameController {
     }
 
     /**
+     * Initialize UI based on the current game state.
+     */
+    /**
      * Updates the table display with the latest card and sum.
      * Called whenever the table state changes.
      */
-     * Called whenever the table state changes (e.g., after a move).
-    */
     private void updateTableUI() {
         System.out.println("Updating table UI...");
         if (game == null || game.getTable() == null)
@@ -71,110 +69,6 @@ public class GameController {
         lblTableSum.setText("Sum: " + sum);
     }
 
-    // A central method to update the entire UI
-    private void updateUI()
-    {
-        updateTableUI();
-        updatePlayerHandUI();
-    }
-
-    // Method to display the player's hand
-    private void updatePlayerHandUI()
-    {
-        Player humanPlayer = game.getPlayers().get(0);
-        playerHandBox.getChildren().clear();
-
-        for (Card card : humanPlayer.getHand())
-        {
-            Label cardLabel = new Label(card.toString());
-            cardLabel.getStyleClass().add("card-label");
-
-            // Action of the human player
-            cardLabel.setOnMouseClicked(event ->
-            {
-                // It only allows playing if it is the human's turn
-                if (game.getCurrentPlayerIndex() == humanPlayer)
-                {
-                    handleHumanPlay(card);
-                }
-            });
-
-            playerHandBox.getChildren().add(cardLabel);
-        }
-    }
-
-    private void handleHumanPlay(Card card)
-    {
-        // Validate if the move is legal
-        if (!game.isValidPlay(card))
-        {
-            System.out.println("Movimiento ilegal: " + card);
-            return;
-        }
-
-        // Disable the hand while processing
-        playerHandBox.setDisable(true);
-        lblCurrentPlayer.setText("Procesando...");
-
-        // Execute the turn
-        game.executePlay(game.getHumanPlayer(), card);
-        updateUI();
-
-        // Start the machine sequence
-        checkNextTurn();
-    }
-
-    /** REVIEW THE FOLLOWING TURN (Called after each move)
-     * This is the main "Game Loop"
-     */
-    private void checkNextTurn()
-    {
-        // Advance to the next valid player in the model
-        // ALL LOGIC (elimination, skip turn) happens in this method!
-        Player nextPlayer = game.advanceToNextValidTurn();
-        updateUI();
-
-        // Check end of game
-        if (game.isGameOver())
-        {
-            showGameOver(game.getWinner());
-            return;
-        }
-
-        // Decide whether it is the AI's or the Human's turn
-        if (nextPlayer.isMachine())
-        {
-            lblCurrentPlayer.setText("Turno de: " + nextPlayer.getName());
-            runMachineTurn(nextPlayer);
-        }
-        else
-        {
-            // Human's turn
-            lblCurrentPlayer.setText("¡Tu Turno!");
-            playerHandBox.setDisable(false);
-        }
-    }
-
-    /** MACHINE THREAD (AI)
-     * This runs in the background so as not to freeze the UI.
-     */
-    private void runMachineTurn(Player machine)
-    {
-
-        Task<Card> machineTask = new Task<>()
-        {
-            @Override
-            protected Card call() throws Exception
-            {
-                Thread.sleep(1500); // 1.5 seconds
-                return machine.findBestMove(game.getTable().getCurrentSum());
-            }
-        };
-
-        // When the thread finishes (setOnSucceeded)
-        machineTask.setOnSucceeded(event ->
-        {
-            Card cardToPlay = machineTask.getValue(); // Get the chosen card
 
 
     /**
