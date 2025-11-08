@@ -4,28 +4,22 @@ import com.example.cincuentazo.models.Card;
 import com.example.cincuentazo.models.Game;
 import com.example.cincuentazo.models.Player;
 import com.example.cincuentazo.models.Table;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import java.util.ArrayList;
-import java.util.List;
-import javafx.event.ActionEvent;
 
 public class GameController {
 
     @FXML
-    private Label lblOpponents;
+    private Label lblOpponents; // It is not in use yet, but we will leave it.
     @FXML
     private Label lblTableSum;
-
     @FXML
-    private Label lblTableCard; // Shows the actual card
-
+    private Label lblTableCard; //Shows the actual card
     @FXML
-    private HBox playerHandBox; //  container for the human player's cards
-    private List<Card> playerCards = new ArrayList<>();
-
+    private HBox playerHandBox; // The container for the human player's cards
     @FXML
     private Label lblCurrentPlayer; //to reference in the threads
 
@@ -40,61 +34,48 @@ public class GameController {
      */
     public void setGame(Game game) {
         this.game = game;
-        updateTableUI();
-        renderPlayerHand();   // Muestra las cartas del jugador
-
+        // Start the UI
+        updateUI();
+        // Start the game (the human always starts)
+        lblCurrentPlayer.setText("¡Tu Turno!");
+        playerHandBox.setDisable(false);
     }
 
     /**
      * Updates the table display with the latest card and sum.
-     * Called whenever the table state changes.
-     */
      * Called whenever the table state changes (e.g., after a move).
-    */
+     */
     private void updateTableUI() {
-        System.out.println("Updating table UI...");
-        if (game == null || game.getTable() == null)
-            return;
+        if (game == null || game.getTable() == null) return;
 
         Table table = game.getTable();
         Card lastCard = table.getLastCard();
         int sum = table.getCurrentSum();
 
-        // Display card symbol
         if (lastCard != null) {
             lblTableCard.setText(lastCard.toString());
         } else {
             lblTableCard.setText("");
         }
-
         // Update sum label
         lblTableSum.setText("Sum: " + sum);
     }
 
-    // A central method to update the entire UI
-    private void updateUI()
-    {
-        updateTableUI();
-        updatePlayerHandUI();
-    }
-
-    // Method to display the player's hand
-    private void updatePlayerHandUI()
-    {
-        Player humanPlayer = game.getPlayers().get(0);
+    /**
+     * Method to display the player's hand (with kickable labels).
+     */
+    private void updatePlayerHandUI() {
+        Player humanPlayer = game.getHumanPlayer();
         playerHandBox.getChildren().clear();
 
-        for (Card card : humanPlayer.getHand())
-        {
+        for (Card card : humanPlayer.getHand()) {
             Label cardLabel = new Label(card.toString());
-            cardLabel.getStyleClass().add("card-label");
+            cardLabel.getStyleClass().add("card-button");
 
             // Action of the human player
-            cardLabel.setOnMouseClicked(event ->
-            {
-                // It only allows playing if it is the human's turn
-                if (game.getCurrentPlayerIndex() == humanPlayer)
-                {
+            cardLabel.setOnMouseClicked(event -> {
+                // // It only allows playing if it is the human's turn
+                if (!playerHandBox.isDisabled()) {
                     handleHumanPlay(card);
                 }
             });
@@ -103,12 +84,21 @@ public class GameController {
         }
     }
 
-    private void handleHumanPlay(Card card)
-    {
+    /**
+     * A central method to update the entire UI
+     */
+    private void updateUI() {
+        updateTableUI();
+        updatePlayerHandUI();
+    }
+
+    /**
+     * It is executed when the human clicks on a card.
+     */
+    private void handleHumanPlay(Card card) {
         // Validate if the move is legal
-        if (!game.isValidPlay(card))
-        {
-            System.out.println("Movimiento ilegal: " + card);
+        if (!game.isValidPlay(card)) {
+            System.out.println("Movimiento ilegal: " + card + " excede 50.");
             return;
         }
 
@@ -127,149 +117,86 @@ public class GameController {
     /** REVIEW THE FOLLOWING TURN (Called after each move)
      * This is the main "Game Loop"
      */
-    private void checkNextTurn()
-    {
+    private void checkNextTurn() {
         // Advance to the next valid player in the model
-        // ALL LOGIC (elimination, skip turn) happens in this method!
+        // ALL LOGIC (elimination, skip turn) happens in this method
         Player nextPlayer = game.advanceToNextValidTurn();
         updateUI();
 
         // Check end of game
-        if (game.isGameOver())
-        {
+        if (game.isGameOver()) {
             showGameOver(game.getWinner());
             return;
         }
 
         // Decide whether it is the AI's or the Human's turn
-        if (nextPlayer.isMachine())
-        {
+        if (nextPlayer.isMachine()) {
             lblCurrentPlayer.setText("Turno de: " + nextPlayer.getName());
-            runMachineTurn(nextPlayer);
-        }
-        else
-        {
+            playerHandBox.setDisable(true); // Disable human hand
+            runMachineTurn(nextPlayer); // Start the AI thread
+        } else {
             // Human's turn
             lblCurrentPlayer.setText("¡Tu Turno!");
-            playerHandBox.setDisable(false);
+            playerHandBox.setDisable(false); // Enable human hand
+        }
+    }
+
+    /**
+     * Displays the end-of-game alert
+     */
+    private void showGameOver(Player winner) {
+        playerHandBox.setDisable(true);
+        if (winner != null) {
+            lblCurrentPlayer.setText("¡FIN DEL JUEGO! Ganador: " + winner.getName());
+        } else {
+            lblCurrentPlayer.setText("¡FIN DEL JUEGO! (Empate/Nadie gana)");
         }
     }
 
     /** MACHINE THREAD (AI)
      * This runs in the background so as not to freeze the UI.
      */
-    private void runMachineTurn(Player machine)
-    {
+    private void runMachineTurn(Player machine) {
 
-        Task<Card> machineTask = new Task<>()
-        {
+        // Task is JavaFX's way of handling threads.
+        Task<Card> machineTask = new Task<>() {
             @Override
-            protected Card call() throws Exception
-            {
+            protected Card call() throws Exception {
+                // 1. Pause to simulate that the AI thinks
                 Thread.sleep(1500); // 1.5 seconds
+
+                // 2. Calls the AI logic that we added in Player.java
                 return machine.findBestMove(game.getTable().getCurrentSum());
             }
         };
 
         // When the thread finishes (setOnSucceeded)
-        machineTask.setOnSucceeded(event ->
-        {
+        machineTask.setOnSucceeded(event -> {
             Card cardToPlay = machineTask.getValue(); // Get the chosen card
 
-
-    /**
-     * Renders the human player's hand as 4 interactive card buttons.
-     * Assumes the human player is at index 0 in the players list.
-     */
-    private void renderPlayerHand() {
-        System.out.println("Rendering player hand...");
-        // Clear any existing cards
-        playerHandBox.getChildren().clear();
-
-        // Get human player on index 0
-        Player humanPlayer = game.getPlayers().get(0);
-        List<Card> hand = humanPlayer.getHand();
-
-        // Create a button for each card in hand
-        for (int visualIndex = 0; visualIndex < hand.size(); visualIndex++) {
-            Card card = hand.get(visualIndex);
-            Button cardButton = new Button(card.toString());
-            cardButton.getStyleClass().add("card-button");
-
-            // Store the actual Card object in the button's properties
-            cardButton.getProperties().put("card", card);
-            cardButton.getProperties().put("visualIndex", visualIndex);
-
-            //cardButton.setOnAction(event -> selectCard(event));
-
-            cardButton.setOnAction(event -> {
-                Button btn = (Button) event.getSource();
-                Card selectedCard = (Card) btn.getProperties().get("card");
-                int index = (Integer) btn.getProperties().get("visualIndex");
-                selectCard(selectedCard, index, btn); // ← Pass index + button
-            });
-
-
-            playerHandBox.getChildren().add(cardButton);
-        }
-
-    }
-
-    // Method to handle event
-    /**
-     * Handles the selection of a card by the human player.
-     *
-     * <p>The visual position of the card is preserved: only the clicked button is updated,
-     * ensuring the other 3 cards remain in their original positions for usability.
-     *
-     * @param selectedCard the card selected by the player
-     * @param visualIndex  the visual position (0–3) of the card in the hand UI
-     */
-    private void selectCard(Card selectedCard, int visualIndex, Button button) {
-        try {
-            System.out.println("Playing card: " + selectedCard);
-            /*
-            // obtain the card selected
-            Button clickedButton = (Button) event.getSource();
-            String cardText = clickedButton.getText();
-
-            System.out.println("Selected card: " + cardText);
-             */
-
-            // Get human player
-            Player humanPlayer = game.getPlayers().get(0);
-
-            // Play the card and get the new one
-            Card newCard = game.playCard(humanPlayer, selectedCard);
-
-            if (newCard != null) {
-                // Update ONLY this button with the NEW card
-                button.setText(newCard.toString());
-                button.getProperties().put("card", newCard);
-                // ← visualIndex stays the same (no need to update)
+            if (cardToPlay == null) {
+                // This shouldn't happen if the elimination logic works, but it's a safety net.
+                System.err.println("ERROR: La máquina " + machine.getName() + " no pudo jugar y no fue eliminada.");
             } else {
-                // Deck empty: remove the button (or disable it)
-                playerHandBox.getChildren().remove(button);
+                // Execute the turn in the model
+                // (The AI has already removed the card from its hand in findBestMove)
+                game.executePlay(machine, cardToPlay);
             }
 
-            // Update the UI tabl,player,hand and sum
-            lblTableCard.setText(selectedCard.toString());
-            lblTableSum.setText("Sum: " + game.getTable().getCurrentSum());
+            // 5. Move on to the next turn
+            // Platform.runLater ensures this runs on the main UI thread
+            Platform.runLater(this::checkNextTurn);
+        });
 
-
-            System.out.println(" UI updated: position " + visualIndex + " now shows " + newCard);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        // Start the thread
+        new Thread(machineTask).start();
     }
 
-
-
-
-
-
-
+    /*
+    ALL OLD METHODS (renderPlayerHand, selectCard, etc.)
+    have been removed because the new logic (updatePlayerHandUI, handleHumanPlay)
+    is cleaner and handles state better.
+     */
 
 
 }

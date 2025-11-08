@@ -61,17 +61,6 @@ public class Game
             }
         }
 
-        int cardsToDeal = 4;
-        for (int i = 0; i < cardsToDeal; i++)
-        {
-            for (Player player : players)
-            {
-                if (!deck.isEmpty())
-                {
-                    player.receiveCard(deck.dealCard());
-                }
-            }
-        }
         System.out.println("=== MANOS DE JUGADORES ===");
         for (Player p : players) {
             System.out.println(p.getName() + ": " + p.getHand());
@@ -80,18 +69,14 @@ public class Game
 
         // Draw the first card and place it on the table
         Card initialCard = deck.dealCard();
-        table.playCard(initialCard); // Updates sum and stores card
+        table.addCard(initialCard); // Updates sum and stores card
 
         System.out.println("Intialized table with card: " + initialCard +
                 "  Table sum: " + table.getCurrentSum());
         // Show how many cards remain in deck
         System.out.println("Cards left in deck: " + deck.size()); // 52 - (4 * totalPlayers) - 1 (initial card)
 
-    }//END METHOD STAR GAMGE
-
-    public Deck getDeck() {
-        return deck;
-    }
+    }//END METHOD START GAME
 
     // Logic to play a card
     /**
@@ -131,7 +116,6 @@ public class Game
         return null; // deck empty
     }//END METHOD PLAYCARD
 
-    }
 
 
     // Method to count cards left in deck
@@ -167,11 +151,11 @@ public class Game
         // Remove the card from the hand (if it is human. The AI already did it).
         if (!player.isMachine())
         {
-            player.playCard(card);
+            player.removeCard(card);
         }
 
         // Play the card on the table (updates the total)
-        table.playCard(card);
+        table.addCard(card);
 
         // Draw a card (and play an empty deck)
         checkDeckAndDraw(player);
@@ -203,7 +187,7 @@ public class Game
         }
 
         // Is it disqualified? If yes, skip
-        if (nextPlayer.isEliminated())
+        if (nextPlayer.getIfIsEliminated())
         {
             return advanceToNextValidTurn(); //Recursion to jump to the next
         }
@@ -262,7 +246,7 @@ public class Game
     public List<Player> getActivePlayers()
     {
         return players.stream()
-                .filter(p -> !p.isEliminated())
+                .filter(p -> !p.getIfIsEliminated())
                 .collect(Collectors.toList());
     }
 
