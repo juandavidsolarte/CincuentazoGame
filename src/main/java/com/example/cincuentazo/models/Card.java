@@ -72,7 +72,7 @@ public class Card {
             return getValue();
         }
         // Choose 10 for Ace only if it doesn't make the total exceed 50
-        //return (currentTableSum + 10 <= 50) ? 10 : 1;
+
         if (currentTableSum + 10 <= 50)
         {
             return 10;

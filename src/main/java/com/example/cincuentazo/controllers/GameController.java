@@ -11,7 +11,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
 public class GameController {
-
+    @FXML
+    public Label lblDeck;
     @FXML
     private Label lblOpponents; // It is not in use yet, but we will leave it.
     @FXML
@@ -90,7 +91,31 @@ public class GameController {
     private void updateUI() {
         updateTableUI();
         updatePlayerHandUI();
+        updateDeckLabel();
+        updateOpponentsLabel();
+
     }
+
+
+    private void updateDeckLabel() {
+        int remaining = game.getCardsLeftInDeck();
+        lblDeck.setText("Deck: " + remaining + " cards");
+    }
+
+    private void updateOpponentsLabel() {
+        if (game == null) {
+            throw new IllegalStateException("The has not been initialized yet.");
+        }
+
+        // Obtiene los jugadores activos
+        int totalActives = game.getActivePlayers().size();
+
+        // Restamos 1 para no contar al jugador
+        int opponentsLeft= totalActives - 1;
+
+        lblOpponents.setText("Active Oponnents : " + opponentsLeft);
+    }
+
 
     /**
      * It is executed when the human clicks on a card.

@@ -51,11 +51,16 @@ public class Table {
      */
     public List<Card> takeAllExceptLast() {
         if (cardsOnTable.size() <= 1) {
-            return new ArrayList<>(); // There is nothing to pick up
+            System.out.println("There are still cards in the deck");
+            return new ArrayList<>();// There is nothing to pick up
         }
 
-        //Copy all the letters except the last one
-        List<Card> cardsToReshuffle = new ArrayList<>(cardsOnTable.subList(0, cardsOnTable.size() - 1));
+        //Copy all cards except the last one
+        List<Card> cardsToReshuffle = new ArrayList<>();
+        for (int i = 0; i < cardsOnTable.size() - 1; i++) {
+            cardsToReshuffle.add(cardsOnTable.get(i));
+        }
+
 
         // Leave only the last card on the table
         Card last = getLastCard(); // Use the method that was just fixed
@@ -67,7 +72,6 @@ public class Table {
 
     /**
      * Returns the list of cards on the table (for deck reset).
-     * (This was the second duplicate method; now it's the only one.)
      */
     public List<Card> getCardsOnTable() {
         return cardsOnTable;

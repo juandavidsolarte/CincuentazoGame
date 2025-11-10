@@ -40,7 +40,7 @@ public class Game
         System.out.println("=== DECK: Card and Value ===");
         for (int i = 0; i < deck.getAllCards().size(); i++) {
             Card card = deck.getAllCards().get(i);
-            System.out.println((i + 1) + ". " + card + " → value = " + card.getValue());
+            System.out.println((i + 1) + ". " + card + "  value = " + card.getValue());
         }
         System.out.println("================================");
 
@@ -78,47 +78,9 @@ public class Game
 
     }//END METHOD START GAME
 
-    // Logic to play a card
-    /**
-     * Plays a card from the given player's hand, updates the table sum,
-     * and draws a replacement card from the deck if available.
-     *
-     * <p>This method:
-     * <ul>
-     *   <li>Removes the card from the player's hand
-     *   <li>Adds the card's value to the table sum via
-     *   <li>Draws a new card from the deck and adds it to the player's hand, if the deck is not empty.
-     * </ul>
-     *
-     */
-    public Card playCard(Player player, Card card) {
-
-        Table table = getTable();
-        Deck deck = getDeck();
-
-        boolean removed = player.removeCard(card);
-        if (!removed) {
-            System.err.println(" Card " + card + " not found in hand.");
-            return null;
-        }
-
-        table.addCard(card);
-        System.out.println(" Played: " + card + " → Sum: " + table.getCurrentSum());
-
-        // Draw new card if available
-        if (!deck.isEmpty()) {
-            Card newCard = deck.dealCard();
-            player.addCard(newCard);
-            System.out.println(" Drew: " + newCard);
-            return newCard;
-        }
-
-        return null; // deck empty
-    }//END METHOD PLAYCARD
 
 
-
-    // Method to count cards left in deck
+   // Method to count cards left in deck
     public int getCardsLeftInDeck() {
         return deck.size();
     }
@@ -208,7 +170,7 @@ public class Game
      */
     private void handleElimination(Player player)
     {
-        System.out.println("¡JUGADOR ELIMINADO: " + player.getName() + "!");
+        System.out.println("¡Player eliminated: " + player.getName() + "!");
         player.setEliminated(true);
         // The eliminated player's cards are sent to the bottom of the deck
         deck.addCardsToBottom(player.getHand());
@@ -222,7 +184,7 @@ public class Game
     {
         if (deck.isEmpty())
         {
-            System.out.println("¡Mazo vacío! Rellenando desde la mesa...");
+            System.out.println("¡Deck Empty! Refilling from the table...");
             List<Card> tableCards = table.takeAllExceptLast();
             deck.reshuffleFromTable(tableCards);
         }
@@ -250,39 +212,5 @@ public class Game
                 .collect(Collectors.toList());
     }
 
-    /*
 
-    private boolean gameActive; //determinant of whether there is an active game or not
-
-    public Game(int numPlayers)
-    {
-        deck = new Deck();
-        List<Player> players = new ArrayList<>();
-        players.add(new Player("Player 1", false));
-
-        for (int i = 2; i <= numPlayers; i++)
-        {
-            players.add(new Player("CPU " + i, true));
-        }
-        table = new Table(players);
-        gameActive = true;
-    }
-
-    public void dealCards()
-    {
-        for (Player p : table.getPlayers()) {
-            for (int i = 0; i < 4; i++) {
-                p.receiveCard(deck.drawCard());
-            }
-        }
-    }
-
-    public void startTurns()
-    {
-        //we will later put the threads
-    }
-
-    public Table getTable() { return table; }
-
-     */
 }
