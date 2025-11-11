@@ -5,26 +5,23 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="622.0" prefWidth="809.0" styleClass="main-background" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cincuentazo.controllers.GameController">
-    <!-- Fondo translúcido -->
+<AnchorPane prefHeight="622.0" prefWidth="809.0" styleClass="main-background" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cincuentazo.controllers.GameController">
+    <VBox layoutX="100.0" layoutY="100.0" spacing="10.0" styleClass="content-box">
 
-    <VBox layoutX="100.0" layoutY="100.0" spacing="20.0" styleClass="content-box">
-        <Label styleClass="title" text="Cincuentazo - Game Screen" />
+        <Label styleClass="title" text="Cincuentazo - Game Table" />
         <Label fx:id="lblOpponents" styleClass="subtitle" />
         <Label fx:id="lblTableSum" styleClass="section-title" text="Table Sum: 0" />
-        <Label fx:id="lblCurrentPlayer" styleClass="section-subtitle" text="Your turn!" style="-fx-font-size: 20px; -fx-font-weight: bold;-fx-text-fill: #e8c900;" />
-        <Label fx:id="lblDeck" text="Deck: 52 cards" styleClass="section-subtitle" />
-        <!--  Contenedor de la carta en mesa -->
-        <Label fx:id="lblTableCard" prefHeight="91.0" prefWidth="58.0" styleClass="table-card" text=" " />
-
-        <!--  Contenedor para las 4 cartas del jugador -->
-        <HBox fx:id="playerHandBox" alignment="CENTER" prefHeight="93.0" prefWidth="616.0" spacing="15" />
+        <Label fx:id="lblCurrentPlayer" prefHeight="30.0" prefWidth="583.0" style="-fx-font-size: 20px; -fx-font-weight: bold;-fx-text-fill: #e8c900;" styleClass="section-subtitle" text="Your turn!" />
+        <Label fx:id="lblError" prefHeight="30.0" prefWidth="598.0" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #5ADBD4;" text="Label" />
+        <Label fx:id="lblDeck" styleClass="section-subtitle" text="Deck: 52 cards" />
 
 
+        <VBox styleClass="game-board" alignment="CENTER" spacing="30.0">
 
+            <Label fx:id="lblTableCard" prefHeight="91.0" prefWidth="58.0" styleClass="table-card" text=" " />
 
+            <HBox fx:id="playerHandBox" alignment="CENTER" prefHeight="93.0" prefWidth="616.0" spacing="15" />
 
-
+        </VBox>
     </VBox>
 </AnchorPane>
-

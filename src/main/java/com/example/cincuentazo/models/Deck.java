@@ -2,6 +2,7 @@ package com.example.cincuentazo.models;
 
 import com.example.cincuentazo.models.Card;
 import java.util.*;
+import com.example.cincuentazo.models.CincuentazoException;
 
 /**
  * Represents a standard English deck of playing cards (52 cards).
@@ -76,13 +77,14 @@ public class Deck
      * Deals (removes and returns) the top card from the deck.
      *
      * @return the top Card
+     * @throws CincuentazoException then
      * @throws IllegalStateException if the deck is empty
      */
-    public Card dealCard() {
+    public Card dealCard() throws CincuentazoException {
         if (cards.isEmpty()) {
-            throw new IllegalStateException("Cannot deal from an empty deck.");
+            throw new CincuentazoException("No se puede robar, el mazo está vacío.",
+                    new IllegalStateException("Cannot deal from an empty deck."));
         }
-        // Remove and return the last card (efficient for ArrayList)
         return cards.remove(cards.size() - 1);
     }
 

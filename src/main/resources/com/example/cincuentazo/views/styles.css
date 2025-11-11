@@ -190,3 +190,21 @@
     -fx-scale-x: 0.95;
     -fx-scale-y: 0.95;
 }
+
+/* =============Styles Game Board ========= */
+
+.game-board {
+    /* Este es el color verde "fieltro de casino" */
+    -fx-background-color: #2A572A;
+
+    /* Un borde sutil para que resalte */
+    -fx-border-color: #1A331A;
+    -fx-border-width: 3px;
+
+    /* Esquinas redondeadas */
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+
+    /* Espacio interno para que las cartas no queden pegadas a los bordes */
+    -fx-padding: 20px;
+}
