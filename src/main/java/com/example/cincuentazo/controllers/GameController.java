@@ -4,11 +4,14 @@ import com.example.cincuentazo.models.Card;
 import com.example.cincuentazo.models.Game;
 import com.example.cincuentazo.models.Player;
 import com.example.cincuentazo.models.Table;
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import com.example.cincuentazo.models.CincuentazoException;
+import javafx.util.Duration;
 
 public class GameController {
     @FXML
@@ -23,6 +26,8 @@ public class GameController {
     private HBox playerHandBox; // The container for the human player's cards
     @FXML
     private Label lblCurrentPlayer; //to reference in the threads
+    @FXML
+    private Label lblError;
 
     // Reference to the active game
     private Game game;
@@ -40,6 +45,7 @@ public class GameController {
         // Start the game (the human always starts)
         lblCurrentPlayer.setText("¡Tu Turno!");
         playerHandBox.setDisable(false);
+        lblError.setVisible(false);
     }
 
     /**
@@ -119,24 +125,44 @@ public class GameController {
 
     /**
      * It is executed when the human clicks on a card.
+     * @throws CincuentazoException if the last play exceeds 50
      */
     private void handleHumanPlay(Card card) {
-        // Validate if the move is legal
-        if (!game.isValidPlay(card)) {
-            System.out.println("Movimiento ilegal: " + card + " excede 50.");
-            return;
+        try
+        {
+            // Validate if the move is legal
+            if (!game.isValidPlay(card))
+            {
+                throw new CincuentazoException("¡Movimiento Ilegal! " + card + " excede el límite de 50.");
+            }
+
+            // Disable the hand while processing
+            playerHandBox.setDisable(true);
+            lblCurrentPlayer.setText("Procesando...");
+
+            // Execute the turn
+            game.executePlay(game.getHumanPlayer(), card);
+            updateUI();
+
+            // Start the machine sequence
+            checkNextTurn();
         }
+        catch (CincuentazoException e)
+        {
+            System.err.println("Error de juego: " + e.getMessage());
+            lblError.setText(e.getMessage());
+            lblError.setVisible(true);
 
-        // Disable the hand while processing
-        playerHandBox.setDisable(true);
-        lblCurrentPlayer.setText("Procesando...");
+            PauseTransition delay = new PauseTransition(Duration.seconds(2));
 
-        // Execute the turn
-        game.executePlay(game.getHumanPlayer(), card);
-        updateUI();
+            delay.setOnFinished(event ->
+            {
+                lblError.setText("");
+                lblError.setVisible(false);
+            });
 
-        // Start the machine sequence
-        checkNextTurn();
+            delay.play();
+        }
     }
 
     /** REVIEW THE FOLLOWING TURN (Called after each move)
@@ -216,12 +242,5 @@ public class GameController {
         // Start the thread
         new Thread(machineTask).start();
     }
-
-    /*
-    ALL OLD METHODS (renderPlayerHand, selectCard, etc.)
-    have been removed because the new logic (updatePlayerHandUI, handleHumanPlay)
-    is cleaner and handles state better.
-     */
-
 
 }
