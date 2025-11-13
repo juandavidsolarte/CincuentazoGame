@@ -43,7 +43,7 @@ public class GameController {
         // Start the UI
         updateUI();
         // Start the game (the human always starts)
-        lblCurrentPlayer.setText("¡Tu Turno!");
+        lblCurrentPlayer.setText("Your Turn!");
         playerHandBox.setDisable(false);
         lblError.setVisible(false);
     }
@@ -65,7 +65,7 @@ public class GameController {
             lblTableCard.setText("");
         }
         // Update sum label
-        lblTableSum.setText("Sum: " + sum);
+        lblTableSum.setText(""+sum);
     }
 
     /**
@@ -133,12 +133,12 @@ public class GameController {
             // Validate if the move is legal
             if (!game.isValidPlay(card))
             {
-                throw new CincuentazoException("¡Movimiento Ilegal! " + card + " excede el límite de 50.");
+                throw new CincuentazoException("Illegal Move! " + card + " exceeds the limit of 50.");
             }
 
             // Disable the hand while processing
             playerHandBox.setDisable(true);
-            lblCurrentPlayer.setText("Procesando...");
+            lblCurrentPlayer.setText("Processing...");
 
             // Execute the turn
             game.executePlay(game.getHumanPlayer(), card);
@@ -182,12 +182,12 @@ public class GameController {
 
         // Decide whether it is the AI's or the Human's turn
         if (nextPlayer.isMachine()) {
-            lblCurrentPlayer.setText("Turno de: " + nextPlayer.getName());
+            lblCurrentPlayer.setText("Shift of: " + nextPlayer.getName());
             playerHandBox.setDisable(true); // Disable human hand
             runMachineTurn(nextPlayer); // Start the AI thread
         } else {
             // Human's turn
-            lblCurrentPlayer.setText("¡Tu Turno!");
+            lblCurrentPlayer.setText("Your Turn!");
             playerHandBox.setDisable(false); // Enable human hand
         }
     }
@@ -198,9 +198,9 @@ public class GameController {
     private void showGameOver(Player winner) {
         playerHandBox.setDisable(true);
         if (winner != null) {
-            lblCurrentPlayer.setText("¡FIN DEL JUEGO! Ganador: " + winner.getName());
+            lblCurrentPlayer.setText("GAME OVER! Winner:" + winner.getName());
         } else {
-            lblCurrentPlayer.setText("¡FIN DEL JUEGO! (Empate/Nadie gana)");
+            lblCurrentPlayer.setText("GAME OVER! (Tie/No one wins)");
         }
     }
 
@@ -214,7 +214,7 @@ public class GameController {
             @Override
             protected Card call() throws Exception {
                 // 1. Pause to simulate that the AI thinks
-                Thread.sleep(1500); // 1.5 seconds
+                Thread.sleep(2000); // 2 seconds
 
                 // 2. Calls the AI logic that we added in Player.java
                 return machine.findBestMove(game.getTable().getCurrentSum());
