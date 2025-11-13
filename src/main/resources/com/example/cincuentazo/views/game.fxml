@@ -10,17 +10,39 @@
 
         <Label styleClass="title" text="Cincuentazo - Game Table" />
         <Label fx:id="lblOpponents" styleClass="subtitle" />
-        <Label fx:id="lblTableSum" styleClass="section-title" text="Table Sum: 0" />
+
         <Label fx:id="lblCurrentPlayer" prefHeight="30.0" prefWidth="583.0" style="-fx-font-size: 20px; -fx-font-weight: bold;-fx-text-fill: #e8c900;" styleClass="section-subtitle" text="Your turn!" />
         <Label fx:id="lblError" prefHeight="30.0" prefWidth="598.0" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #5ADBD4;" text="Label" />
-        <Label fx:id="lblDeck" styleClass="section-subtitle" text="Deck: 52 cards" />
+        <Label fx:id="lblDeck" styleClass="deck-label" text="DECK: 52 CARDS" />
 
+        <VBox styleClass="game-board" alignment="CENTER" spacing="20.0"> <HBox alignment="CENTER" spacing="50.0"> <VBox alignment="CENTER" spacing="5">
+            <Label text="D E C K" styleClass="deck-label" />
+            <VBox styleClass="deck-decoration" />
+        </VBox>
 
-        <VBox styleClass="game-board" alignment="CENTER" spacing="30.0">
+            <VBox alignment="CENTER" spacing="5">
+                <Label text="S U M" styleClass="pile-label" />
+                <Label fx:id="lblTableSum" styleClass="sum-display" text="Table Sum: 0" />
+            </VBox>
 
-            <Label fx:id="lblTableCard" prefHeight="91.0" prefWidth="58.0" styleClass="table-card" text=" " />
+            <VBox alignment="CENTER" spacing="5">
+                <Label text="H E A P" styleClass="pile-label" />
+                <Label fx:id="lblTableCard" prefHeight="91.0" prefWidth="58.0" styleClass="table-card" text=" " />
+            </VBox>
 
-            <HBox fx:id="playerHandBox" alignment="CENTER" prefHeight="93.0" prefWidth="616.0" spacing="15" />
+        </HBox>
+
+            <HBox alignment="CENTER" spacing="10">
+
+                <VBox styleClass="hand-label-wrapper">
+                    <Label text="H&#10;A&#10;N&#10;D" styleClass="hand-vertical-label" textAlignment="CENTER" />
+                </VBox>
+
+                <VBox alignment="CENTER" styleClass="player-hand-container" minWidth="400" minHeight="120">
+                    <HBox fx:id="playerHandBox" alignment="CENTER" spacing="15" />
+                </VBox>
+
+            </HBox>
 
         </VBox>
     </VBox>

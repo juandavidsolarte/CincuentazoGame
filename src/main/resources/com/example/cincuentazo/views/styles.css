@@ -24,12 +24,6 @@
     -fx-font-size: 16px;
 }
 
-.section-title {
-    -fx-text-fill: white;
-    -fx-font-size: 24px;
-    -fx-font-weight: bold;
-}
-
 .section-subtitle {
     -fx-text-fill: #aaaaaa;
     -fx-font-size: 14px;
@@ -139,8 +133,8 @@
 .table-card {
     -fx-font-size: 24px;
     -fx-font-weight: bold;
-    -fx-text-fill: white;
-    -fx-background-color: #1a2328;
+    -fx-text-fill: black;
+    -fx-background-color: white;
     -fx-border-color: #e8c900;
     -fx-border-width: 2px;
     -fx-border-radius: 8px;
@@ -169,8 +163,8 @@
 .card-button {
     -fx-font-size: 24px;
     -fx-font-weight: bold;
-    -fx-text-fill: white;
-    -fx-background-color: #1a2328; /* fondo oscuro */
+    -fx-text-fill: black;
+    -fx-background-color: white; /* fondo oscuro */
     -fx-border-color: #e8c900;
     -fx-border-width: 2px;
     -fx-border-radius: 8px;
@@ -182,7 +176,7 @@
 }
 
 .card-button:hover {
-    -fx-background-color: #2a2f33;
+    -fx-background-color: #e0e0e0;
     -fx-effect: dropshadow(gaussian, rgba(232, 201, 0, 0.6), 12, 0, 0, 0);
 }
 
@@ -208,3 +202,64 @@
     /* Espacio interno para que las cartas no queden pegadas a los bordes */
     -fx-padding: 20px;
 }
+
+/* Estilo para el texto "H E A P" */
+.pile-label {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 5, 0, 0, 2);
+}
+/* Estilo para el texto "D E C K" */
+.deck-label {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 5, 0, 0, 2);
+}
+
+/* Estilo para el texto vertical "H A N D" */
+.hand-vertical-label {
+    -fx-text-fill: #e8c900;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
+    -fx-line-spacing: 2px;
+}
+
+.player-hand-container {
+    -fx-background-color: #1A331A;
+    -fx-background-radius: 8px;
+    -fx-border-radius: 6px;
+    -fx-padding: 10px;
+}
+
+/* Estilo para el contenedor del texto vertical "HAND" */
+.hand-label-wrapper {
+    -fx-pref-width: 40px;
+    -fx-alignment: CENTER;
+}
+
+.deck-decoration {
+    -fx-background-image: url("../images/decoration1.png");
+    -fx-background-size: cover;
+    -fx-background-position: center center;
+    -fx-min-width: 70px;
+    -fx-min-height: 100px;
+    -fx-background-radius: 7px;
+    -fx-border-radius: 8px;
+    -fx-border-width: 1px;
+    -fx-border-color: rgba(187, 181, 133, 0.96);
+    -fx-border-width: 1px;
+}
+
+.sum-display {
+    -fx-text-fill: #e8c900; /* El color dorado que ya usas */
+    -fx-font-size: 60px; /* ¡Bien grande! Puedes ajustar este número */
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.7), 10, 0, 0, 3);
+}
+
